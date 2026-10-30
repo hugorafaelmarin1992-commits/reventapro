@@ -479,7 +479,7 @@ const monedaSeleccionada = () =>
 }
 
 const euros = (numero) =>
-  numero.toLocaleString("es-ES", {
+  (Math.abs(numero) < 0.005 ? 0 : numero).toLocaleString("es-ES", {
     style: "currency",
     currency: monedaSeleccionada()
   });
@@ -541,8 +541,9 @@ const euros = (numero) =>
       document.getElementById("rLogistica").textContent =
         "−" + euros(envio + embalaje);
       document.getElementById("rComision").textContent =
-        "−" + euros(importeComision);
-      document.getElementById("rOtros").textContent = "−" + euros(otros);
+        (importeComision === 0 ? "" : "-") + euros(importeComision);
+      document.getElementById("rOtros").textContent =
+  (otros === 0 ? "" : "-") + euros(otros);
       document.getElementById("rCoste").textContent = euros(costeTotal);
       document.getElementById("rMargen").textContent = porcentaje(margen);
       document.getElementById("rRentabilidad").textContent =
