@@ -3,14 +3,7 @@
 <html lang="es">
 <head>
   
-<!-- Google Analytics - ReventaPro -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JSX3LYY5GQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-JSX3LYY5GQ');
-</script>
+
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -598,4 +591,219 @@ actualizarSimbolos();
     calcular();
   </script>
 </body>
+
+<style>
+  #aviso-cookies {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    max-width: 680px;
+    margin: auto;
+    padding: 22px;
+    background: white;
+    color: #172033;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 8px 35px rgba(0,0,0,.18);
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+  }
+
+  #aviso-cookies h2 {
+    margin: 0 0 10px;
+    font-size: 19px;
+  }
+
+  #aviso-cookies p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .botones-cookies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 16px;
+  }
+
+  .botones-cookies button,
+  #guardar-preferencias {
+    padding: 11px 16px;
+    border: 1px solid #2457e6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  #aceptar-cookies {
+    background: #2457e6;
+    color: white;
+  }
+
+  #rechazar-cookies,
+  #configurar-cookies,
+  #guardar-preferencias {
+    background: white;
+    color: #2457e6;
+  }
+
+  #preferencias-cookies {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    background: #f3f6fb;
+    border-radius: 8px;
+  }
+
+  #ajustes-cookies {
+    position: fixed;
+    bottom: 12px;
+    left: 12px;
+    z-index: 9998;
+    display: none;
+    padding: 10px 14px;
+    border: 1px solid #2457e6;
+    border-radius: 8px;
+    background: white;
+    color: #2457e6;
+    cursor: pointer;
+  }
+</style>
+
+<div id="aviso-cookies" role="dialog"
+     aria-labelledby="titulo-cookies"
+     aria-describedby="texto-cookies"
+     aria-modal="true">
+  <h2 id="titulo-cookies">Tu privacidad importa</h2>
+
+  <p id="texto-cookies">
+    Utilizamos cookies de análisis para conocer cómo se utiliza
+    ReventaPro y mejorar la herramienta. Puedes aceptar,
+    rechazarlas o configurar tus preferencias.
+  </p>
+
+  <div class="botones-cookies">
+    <button id="aceptar-cookies">Aceptar</button>
+    <button id="rechazar-cookies">Rechazar</button>
+    <button id="configurar-cookies">Configurar</button>
+  </div>
+
+  <div id="preferencias-cookies">
+    <label>
+      <input type="checkbox" id="analitica-cookies">
+      Permitir cookies de análisis de Google Analytics
+    </label>
+    <p>
+      Las cookies técnicas necesarias para el funcionamiento
+      de la web no se pueden desactivar desde aquí.
+    </p>
+    <button id="guardar-preferencias">Guardar preferencias</button>
+  </div>
+</div>
+
+<button id="ajustes-cookies" type="button">
+  Preferencias de privacidad
+</button>
+
+<script>
+(function () {
+  const CLAVE = "reventapro_consentimiento";
+
+  const aviso = document.getElementById("aviso-cookies");
+  const preferencias = document.getElementById("preferencias-cookies");
+  const ajustes = document.getElementById("ajustes-cookies");
+  const casilla = document.getElementById("analitica-cookies");
+
+  function activarAnalytics() {
+    if (window.reventaAnalyticsActivo) return;
+
+    window.reventaAnalyticsActivo = true;
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+
+    window.gtag = gtag;
+
+    gtag("consent", "default", {
+      analytics_storage: "denied",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied"
+    });
+
+    gtag("consent", "update", {
+      analytics_storage: "granted"
+    });
+
+    gtag("js", new Date());
+    gtag("config", "G-JSX3LYY5GQ");
+
+    const script = document.createElement("script");
+    script.async = true;
+    script.src =
+      "https://www.googletagmanager.com/gtag/js?id=G-JSX3LYY5GQ";
+
+    document.head.appendChild(script);
+  }
+
+  function guardar(aceptado) {
+    localStorage.setItem(CLAVE, JSON.stringify({
+      analitica: aceptado,
+      fecha: new Date().toISOString()
+    }));
+
+    aviso.style.display = "none";
+    ajustes.style.display = "block";
+
+    if (aceptado) {
+      activarAnalytics();
+    }
+  }
+
+  function mostrarAviso() {
+    aviso.style.display = "block";
+    ajustes.style.display = "none";
+  }
+
+  const guardado = localStorage.getItem(CLAVE);
+
+  if (guardado) {
+    try {
+      const decision = JSON.parse(guardado);
+      aviso.style.display = "none";
+      ajustes.style.display = "block";
+
+      if (decision.analitica === true) {
+        activarAnalytics();
+      }
+    } catch (error) {
+      localStorage.removeItem(CLAVE);
+      mostrarAviso();
+    }
+  } else {
+    mostrarAviso();
+  }
+
+  document.getElementById("aceptar-cookies")
+    .addEventListener("click", () => guardar(true));
+
+  document.getElementById("rechazar-cookies")
+    .addEventListener("click", () => guardar(false));
+
+  document.getElementById("configurar-cookies")
+    .addEventListener("click", () => {
+      preferencias.style.display =
+        preferencias.style.display === "block" ? "none" : "block";
+    });
+
+  document.getElementById("guardar-preferencias")
+    .addEventListener("click", () => guardar(casilla.checked));
+
+  ajustes.addEventListener("click", mostrarAviso);
+})();
+</script>
+
 </html>
