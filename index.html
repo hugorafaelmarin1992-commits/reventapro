@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  
+<!-- Google Analytics - ReventaPro -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JSX3LYY5GQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JSX3LYY5GQ');
+</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calcula el beneficio real de tus ventas en Wallapop, Vinted y otras plataformas.">
+  <title>ReventaPro | Calculadora de beneficios</title>
+
+  <style>
+    :root {
+      --fondo: #f3f6fb;
+      --blanco: #ffffff;
+      --texto: #172033;
+      --secundario: #687386;
+      --principal: #2457e6;
+      --borde: #e2e8f0;
+      --verde: #138a55;
+      --rojo: #d73745;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+    }
+
+    header {
+      background: #111c35;
+      color: white;
+      padding: 22px 18px;
+    }
+
+    .barra {
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #7fa1ff;
+    }
+
+    .etiqueta {
+      font-size: 12px;
+      color: #d5def5;
+      border: 1px solid #45516b;
+      padding: 7px 10px;
+      border-radius: 20px;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 35px auto;
+      padding: 0 18px;
+    }
+
+    .introduccion {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .introduccion h1 {
+      font-size: clamp(27px, 5vw, 42px);
+      margin: 0 0 12px;
+      letter-spacing: -1px;
+    }
+
+    .introduccion p {
+      color: var(--secundario);
+      line-height: 1.6;
+      max-width: 620px;
+      margin: auto;
+    }
+
+    .contenedor {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .tarjeta {
+      background: var(--blanco);
+      padding: 25px;
+      border-radius: 18px;
+      border: 1px solid var(--borde);
+      box-shadow: 0 8px 28px rgba(25, 40, 75, 0.05);
+    }
+
+    .tarjeta h2 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    .descripcion {
+      font-size: 14px;
+      color: var(--secundario);
+      margin: 0 0 22px;
+      line-height: 1.5;
+    }
+
+    .campo {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .ayuda {
+      font-size: 12px;
+      font-weight: normal;
+      color: var(--secundario);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd5e3;
+      border-radius: 9px;
+      font-size: 16px;
+      background: white;
+      color: var(--texto);
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid #b9caff;
+      border-color: var(--principal);
+    }
+
+    .botones {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .principal {
+      flex: 1;
+      background: var(--principal);
+      color: white;
+    }
+
+    .principal:hover {
+      background: #1745c5;
+    }
+
+    .secundario {
+      background: #edf1f8;
+      color: var(--texto);
+    }
+
+    .resultado-principal {
+      background: #eef3ff;
+      border-radius: 13px;
+      padding: 20px;
+      margin: 18px 0;
+    }
+
+    .resultado-principal p {
+      margin: 0 0 7px;
+      color: var(--secundario);
+      font-size: 14px;
+    }
+
+    .beneficio {
+      font-size: clamp(30px, 5vw, 40px);
+      font-weight: 800;
+      color: var(--verde);
+      overflow-wrap: anywhere;
+    }
+
+    .beneficio.negativo {
+      color: var(--rojo);
+    }
+
+    .fila {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--borde);
+      font-size: 14px;
+    }
+
+    .fila:last-child {
+      border-bottom: none;
+    }
+
+    .fila span:first-child {
+      color: var(--secundario);
+    }
+
+    .fila strong {
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .aviso {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--secundario);
+      margin-top: 20px;
+    }
+
+    .etiqueta-resultado {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 20px;
+      background: #e6f6ee;
+      color: var(--verde);
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--secundario);
+      font-size: 13px;
+      padding: 25px 15px 35px;
+    }
+
+    @media (max-width: 720px) {
+      .contenedor {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        margin-top: 24px;
+      }
+
+      .tarjeta {
+        padding: 20px;
+      }
+
+      .etiqueta {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="barra">
+      <div class="logo">Reventa<span>Pro</span></div>
+      <div class="etiqueta">Calculadora gratuita</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="introduccion">
+      <h1>¿Cuánto ganas realmente al revender?</h1>
+      <p>
+        Introduce tus costes y tu precio de venta para calcular el
+        beneficio, el margen y la rentabilidad de cada producto.
+      </p>
+    </section>
+
+    <div class="contenedor">
+      <section class="tarjeta">
+        <h2>Datos de la operación</h2>
+        <p class="descripcion">
+          Introduce los importes de tu operación. Puedes modificar cualquier
+          campo para comparar distintos escenarios.
+        </p>
+
+        <form id="formulario">
+          <div class="campo">
+  <label for="moneda">Moneda de la operación</label>
+  <select id="moneda">
+    <option value="EUR" selected>Euro (€)</option>
+    <option value="USD">Dólar estadounidense ($)</option>
+  </select>
+</div>
+            <div class="campo">
+  <label for="beneficioDeseado">Beneficio que deseas ganar (<span class="simbolo-moneda">€</span>)</label>
+  <input id="beneficioDeseado" type="number" min="0" step="0.01"
+    value="10" required>
+</div>
+          <div class="campo">
+            <label for="producto">Nombre del producto</label>
+            <input id="producto" type="text" maxlength="80"
+              placeholder="Ej.: Zapatillas deportivas">
+          </div>
+
+          <div class="campo">
+  <label for="origenCompra">¿Dónde compras el producto?</label>
+  <select id="origenCompra">
+    <option>Shein</option>
+    <option>Temu</option>
+    <option>AliExpress</option>
+    <option>Amazon</option>
+    <option>Miravia</option>
+    <option>Tienda física</option>
+    <option>Mayorista</option>
+    <option>Otro proveedor</option>
+  </select>
+</div>
+
+<div class="campo">
+  <label for="plataforma">¿Dónde vendes el producto?</label>
+  <select id="plataforma">
+    <option>Wallapop</option>
+    <option>Vinted</option>
+    <option>eBay</option>
+    <option>Facebook Marketplace</option>
+    <option>Mercado Libre</option>
+    <option>Instagram</option>
+    <option>TikTok</option>
+    <option>WhatsApp</option>
+    <option>Otra plataforma</option>
+  </select>
+</div>
+
+          <div class="campo">
+            <label for="compra">Precio de compra (<span class="simbolo-moneda">€</span>)</label>
+            <input id="compra" type="number" min="0" step="0.01"
+              value="20" required>
+          </div>
+
+          <div class="campo">
+            <label for="venta">Precio de venta (<span class="simbolo-moneda">€</span>)</label>
+            <input id="venta" type="number" min="0" step="0.01"
+              value="45" required>
+          </div>
+
+          <div class="campo">
+            <label for="envio">Envío que pagas tú (<span class="simbolo-moneda">€</span>)</label>
+            <input id="envio" type="number" min="0" step="0.01"
+              value="0" required>
+          </div>
+
+          <div class="campo">
+            <label for="embalaje">Embalaje (<span class="simbolo-moneda">€</span>)</label>
+            <input id="embalaje" type="number" min="0" step="0.01"
+              value="1" required>
+          </div>
+
+          <div class="campo">
+            <label for="comision">Comisión de venta (%)</label>
+            <input id="comision" type="number" min="0" max="100"
+              step="0.01" value="0" required>
+            <span class="ayuda">
+              Comprueba las tarifas reales de tu plataforma.
+            </span>
+          </div>
+
+          <div class="campo">
+            <label for="otros">Otros gastos (<span class="simbolo-moneda">€</span>)</label>
+            <input id="otros" type="number" min="0" step="0.01"
+              value="0" required>
+          </div>
+
+          <div class="botones">
+            <button class="principal" type="submit">
+              Calcular beneficio
+            </button>
+            <button class="secundario" type="reset">
+              Reiniciar
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="tarjeta" aria-live="polite">
+        <h2>Tu resultado</h2>
+        <p class="descripcion" id="tituloResultado">
+          Ejemplo inicial. Modifica los datos para calcular tu operación.
+        </p>
+
+        <div class="resultado-principal">
+          <p>Beneficio estimado</p>
+          <div class="beneficio" id="beneficio">24,00 €</div>
+          <div class="etiqueta-resultado" id="estado">
+            Operación rentable
+          </div>
+          <div class="fila">
+  <span>Precio mínimo para ganar lo deseado</span>
+  <strong id="precioMinimo">31,00 €</strong>
+</div>
+        </div>
+
+        <div class="fila">
+          <span>Precio de venta</span>
+          <strong id="rVenta">45,00 €</strong>
+        </div>
+        <div class="fila">
+          <span>Compra del producto</span>
+          <strong id="rCompra">−20,00 €</strong>
+        </div>
+        <div class="fila">
+          <span>Envío y embalaje</span>
+          <strong id="rLogistica">−1,00 €</strong>
+        </div>
+        <div class="fila">
+          <span>Comisión estimada</span>
+          <strong id="rComision">0,00 €</strong>
+        </div>
+        <div class="fila">
+          <span>Otros gastos</span>
+          <strong id="rOtros">0,00 €</strong>
+        </div>
+        <div class="fila">
+          <span>Coste total</span>
+          <strong id="rCoste">21,00 €</strong>
+        </div>
+        <div class="fila">
+          <span>Margen sobre venta</span>
+          <strong id="rMargen">53,33 %</strong>
+        </div>
+        <div class="fila">
+          <span>Rentabilidad sobre coste</span>
+          <strong id="rRentabilidad">114,29 %</strong>
+        </div>
+
+        <p class="aviso">
+          Importante: es una estimación. Introduce las comisiones y
+          los gastos que realmente te correspondan. No incluye
+          impuestos ni otros costes que no hayas declarado.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    ReventaPro · Calcula antes de comprar, vende con más información.
+  </footer>
+
+  <script>
+    const formulario = document.getElementById("formulario");
+
+    const obtenerNumero = (id) => {
+      const valor = document.getElementById(id).value.trim();
+
+      if (valor === "") {
+        return NaN;
+      }
+
+      return Number(valor);
+    };
+const monedaSeleccionada = () =>
+  document.getElementById("moneda").value;
+  function actualizarSimbolos() {
+  const simbolo = monedaSeleccionada() === "USD" ? "$" : "€";
+
+  document.querySelectorAll(".simbolo-moneda").forEach(elemento => {
+    elemento.textContent = simbolo;
+  });
+}
+
+const euros = (numero) =>
+  numero.toLocaleString("es-ES", {
+    style: "currency",
+    currency: monedaSeleccionada()
+  });
+    const porcentaje = (numero) =>
+      numero.toLocaleString("es-ES", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + " %";
+
+    function calcular() {
+      const compra = obtenerNumero("compra");
+      const venta = obtenerNumero("venta");
+      const envio = obtenerNumero("envio");
+      const embalaje = obtenerNumero("embalaje");
+      const comisionPorcentaje = obtenerNumero("comision");
+      const otros = obtenerNumero("otros");
+      const beneficioDeseado = obtenerNumero("beneficioDeseado");
+
+      const valores = [
+  compra,
+  venta,
+  envio,
+  embalaje,
+  comisionPorcentaje,
+  otros,
+  beneficioDeseado
+];
+
+      if (valores.some(v => !Number.isFinite(v) || v < 0)) {
+        alert("Introduce importes válidos, iguales o superiores a cero.");
+        return;
+      }
+
+      if (comisionPorcentaje > 100) {
+        alert("La comisión no puede superar el 100 %.");
+        return;
+      }
+
+      const importeComision = venta * comisionPorcentaje / 100;
+      const costeTotal = compra + envio + embalaje + otros + importeComision;
+      const beneficio = venta - costeTotal;
+      const precioMinimo = Math.ceil(
+  ((compra + envio + embalaje + otros + beneficioDeseado) /
+  (1 - comisionPorcentaje / 100)) * 100
+) / 100;
+      const margen = venta > 0 ? beneficio / venta * 100 : 0;
+      const rentabilidad = costeTotal > 0
+        ? beneficio / costeTotal * 100
+        : null;
+
+      document.getElementById("beneficio").textContent = euros(beneficio);
+      document.getElementById("precioMinimo").textContent = euros(precioMinimo);
+      document.getElementById("beneficio").classList.toggle(
+        "negativo", beneficio < 0
+      );
+
+      document.getElementById("rVenta").textContent = euros(venta);
+      document.getElementById("rCompra").textContent = "−" + euros(compra);
+      document.getElementById("rLogistica").textContent =
+        "−" + euros(envio + embalaje);
+      document.getElementById("rComision").textContent =
+        "−" + euros(importeComision);
+      document.getElementById("rOtros").textContent = "−" + euros(otros);
+      document.getElementById("rCoste").textContent = euros(costeTotal);
+      document.getElementById("rMargen").textContent = porcentaje(margen);
+      document.getElementById("rRentabilidad").textContent =
+        rentabilidad === null ? "No disponible" : porcentaje(rentabilidad);
+
+      const producto = document.getElementById("producto").value.trim();
+const origenCompra = document.getElementById("origenCompra").value;
+const plataforma = document.getElementById("plataforma").value;
+
+      document.getElementById("tituloResultado").textContent =
+  (producto || "Tu producto") + " · " + origenCompra + " → " + plataforma;
+
+      const estado = document.getElementById("estado");
+
+    if (beneficio < 0) {
+  estado.textContent = "Operación con pérdidas";
+  estado.style.background = "#fdebed";
+  estado.style.color = "#d73745";
+} else if (beneficio < beneficioDeseado) {
+  estado.textContent = "Rentable, pero no alcanza tu objetivo";
+  estado.style.background = "#fff4d6";
+  estado.style.color = "#875d00";
+} else {
+  estado.textContent = "Objetivo de beneficio alcanzado";
+  estado.style.background = "#e6f6ee";
+  estado.style.color = "#138a55";
+}
+}
+
+    formulario.addEventListener("submit", function(evento) {
+      evento.preventDefault();
+      calcular();
+    });
+
+    formulario.addEventListener("reset", function() {
+  setTimeout(() => {
+    actualizarSimbolos();
+    calcular();
+  }, 0);
+});
+document.getElementById("moneda").addEventListener("change", () => {
+  actualizarSimbolos();
+  calcular();
+});
+actualizarSimbolos();
+    calcular();
+  </script>
+</body>
+</html>
