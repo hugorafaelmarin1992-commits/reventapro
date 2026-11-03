@@ -1,810 +1,119 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  
-
-
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Calcula el beneficio real de tus ventas en Wallapop, Vinted y otras plataformas.">
-  <title>ReventaPro | Calculadora de beneficios</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ReventaPro: calcula beneficios, costes, margen y rentabilidad de un producto o de un lote antes de comprar o revender. Gratis y sin registro.">
+  <meta name="theme-color" content="#101d36">
+  <title>ReventaPro Fácil | Calcula tus compras y ganancias</title>
   <style>
-    :root {
-      --fondo: #f3f6fb;
-      --blanco: #ffffff;
-      --texto: #172033;
-      --secundario: #687386;
-      --principal: #2457e6;
-      --borde: #e2e8f0;
-      --verde: #138a55;
-      --rojo: #d73745;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--fondo);
-      color: var(--texto);
-    }
-
-    header {
-      background: #111c35;
-      color: white;
-      padding: 22px 18px;
-    }
-
-    .barra {
-      max-width: 1000px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-    }
-
-    .logo span {
-      color: #7fa1ff;
-    }
-
-    .etiqueta {
-      font-size: 12px;
-      color: #d5def5;
-      border: 1px solid #45516b;
-      padding: 7px 10px;
-      border-radius: 20px;
-    }
-
-    main {
-      max-width: 1000px;
-      margin: 35px auto;
-      padding: 0 18px;
-    }
-
-    .introduccion {
-      text-align: center;
-      margin-bottom: 28px;
-    }
-
-    .introduccion h1 {
-      font-size: clamp(27px, 5vw, 42px);
-      margin: 0 0 12px;
-      letter-spacing: -1px;
-    }
-
-    .introduccion p {
-      color: var(--secundario);
-      line-height: 1.6;
-      max-width: 620px;
-      margin: auto;
-    }
-
-    .contenedor {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .tarjeta {
-      background: var(--blanco);
-      padding: 25px;
-      border-radius: 18px;
-      border: 1px solid var(--borde);
-      box-shadow: 0 8px 28px rgba(25, 40, 75, 0.05);
-    }
-
-    .tarjeta h2 {
-      font-size: 20px;
-      margin: 0 0 8px;
-    }
-
-    .descripcion {
-      font-size: 14px;
-      color: var(--secundario);
-      margin: 0 0 22px;
-      line-height: 1.5;
-    }
-
-    .campo {
-      margin-bottom: 17px;
-    }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 7px;
-    }
-
-    .ayuda {
-      font-size: 12px;
-      font-weight: normal;
-      color: var(--secundario);
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccd5e3;
-      border-radius: 9px;
-      font-size: 16px;
-      background: white;
-      color: var(--texto);
-    }
-
-    input:focus, select:focus {
-      outline: 2px solid #b9caff;
-      border-color: var(--principal);
-    }
-
-    .botones {
-      display: flex;
-      gap: 10px;
-      margin-top: 22px;
-    }
-
-    button {
-      border: none;
-      border-radius: 9px;
-      padding: 13px 15px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .principal {
-      flex: 1;
-      background: var(--principal);
-      color: white;
-    }
-
-    .principal:hover {
-      background: #1745c5;
-    }
-
-    .secundario {
-      background: #edf1f8;
-      color: var(--texto);
-    }
-
-    .resultado-principal {
-      background: #eef3ff;
-      border-radius: 13px;
-      padding: 20px;
-      margin: 18px 0;
-    }
-
-    .resultado-principal p {
-      margin: 0 0 7px;
-      color: var(--secundario);
-      font-size: 14px;
-    }
-
-    .beneficio {
-      font-size: clamp(30px, 5vw, 40px);
-      font-weight: 800;
-      color: var(--verde);
-      overflow-wrap: anywhere;
-    }
-
-    .beneficio.negativo {
-      color: var(--rojo);
-    }
-
-    .fila {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 13px 0;
-      border-bottom: 1px solid var(--borde);
-      font-size: 14px;
-    }
-
-    .fila:last-child {
-      border-bottom: none;
-    }
-
-    .fila span:first-child {
-      color: var(--secundario);
-    }
-
-    .fila strong {
-      text-align: right;
-      overflow-wrap: anywhere;
-    }
-
-    .aviso {
-      font-size: 12px;
-      line-height: 1.6;
-      color: var(--secundario);
-      margin-top: 20px;
-    }
-
-    .etiqueta-resultado {
-      display: inline-block;
-      padding: 7px 10px;
-      border-radius: 20px;
-      background: #e6f6ee;
-      color: var(--verde);
-      font-size: 12px;
-      font-weight: 700;
-      margin-top: 12px;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--secundario);
-      font-size: 13px;
-      padding: 25px 15px 35px;
-    }
-
-    @media (max-width: 720px) {
-      .contenedor {
-        grid-template-columns: 1fr;
-      }
-
-      main {
-        margin-top: 24px;
-      }
-
-      .tarjeta {
-        padding: 20px;
-      }
-
-      .etiqueta {
-        display: none;
-      }
-    }
+    :root{color-scheme:light;--ink:#16243d;--muted:#63718a;--blue:#315ff4;--line:#dfe7f4;--green:#087d58;--red:#c73348;--amber:#936000;--shadow:0 18px 50px rgba(25,47,92,.09)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 8% 2%,#d9e9ff 0,transparent 31%),radial-gradient(circle at 92% 15%,#e7e2ff 0,transparent 30%),#f6f8fd;line-height:1.5}
+    button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #92adff;outline-offset:2px}
+    .topbar{background:#111e37;color:white}.top-inner{max-width:1160px;margin:auto;padding:17px 22px;display:flex;justify-content:space-between;align-items:center;gap:14px}.brand{font-size:24px;font-weight:850;letter-spacing:-.9px}.brand span{color:#9db6ff}.top-note{color:#cdd7ed;font-size:13px}
+    main{max-width:1160px;margin:auto;padding:0 20px 52px}.hero{text-align:center;padding:57px 0 30px}.eyebrow{display:inline-block;border:1px solid #b8caff;border-radius:99px;background:#ffffffa8;color:#3557b7;padding:6px 13px;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}.hero h1{font-size:clamp(31px,5.3vw,53px);line-height:1.12;letter-spacing:-1.9px;max-width:790px;margin:18px auto 14px}.hero p{max-width:650px;margin:0 auto;color:var(--muted);font-size:16px}
+    .highlights{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:22px auto 0}.highlights span{background:#ffffffa6;border:1px solid #d9e4f5;border-radius:99px;padding:6px 12px;font-size:12px;color:#425477;font-weight:700}
+    .switcher{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:540px;margin:25px auto 28px;padding:6px;background:#ffffffb9;border:1px solid #e0e8f7;border-radius:17px;box-shadow:0 7px 22px #253f7410}.switcher button{padding:13px;border:0;background:transparent;border-radius:12px;color:#54627c;font-weight:800}.switcher button.active{background:var(--blue);color:white;box-shadow:0 5px 16px #315ff433}
+    .layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:22px;align-items:start}.card{background:rgba(255,255,255,.88);border:1px solid rgba(212,224,244,.9);border-radius:22px;box-shadow:var(--shadow);padding:26px;backdrop-filter:blur(12px)}.card h2{font-size:21px;letter-spacing:-.45px;margin:0 0 7px}.intro{color:var(--muted);font-size:14px;margin:0 0 22px}.section-title{font-size:13px;font-weight:850;color:#435578;text-transform:uppercase;letter-spacing:.8px;margin:23px 0 13px}
+    .fields{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{min-width:0}.field.full{grid-column:1/-1}.field label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}.field input,.field select{width:100%;height:46px;border:1px solid #cad6e9;border-radius:11px;padding:10px 12px;background:#fff;color:var(--ink)}.field input::placeholder{color:#9aa7bb}.hint{display:block;font-size:12px;color:var(--muted);margin-top:5px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.btn{border-radius:11px;padding:12px 18px;border:1px solid #cbd8ed;font-weight:800;background:#fff;color:#304466}.btn-primary{background:var(--blue);border-color:var(--blue);color:white}.btn-primary:hover{background:#214fe0}.btn:hover:not(.btn-primary){background:#f0f5ff}.btn-small{padding:8px 12px;font-size:12px}.btn-danger{color:#b02d46;border-color:#f0cbd3}.error{background:#fff0f2;color:#a12c40;border:1px solid #f3c4ce;border-radius:10px;padding:11px 13px;font-size:13px;margin-top:16px}
+    .result-hero{background:linear-gradient(125deg,#eff5ff,#f7f9ff);border:1px solid #dce6fc;border-radius:17px;padding:22px;margin:17px 0}.result-hero .label{color:#64728b;font-size:13px;font-weight:700}.big{font-size:clamp(30px,4vw,43px);font-weight:900;letter-spacing:-1px;overflow-wrap:anywhere;margin:3px 0}.positive{color:var(--green)}.negative{color:var(--red)}.neutral{color:var(--ink)}.pill{display:inline-block;border-radius:99px;font-size:12px;font-weight:800;padding:6px 10px;background:#e5f6ed;color:#087d58}.pill.loss{background:#ffe8eb;color:#b52c43}.pill.warning{background:#fff1d3;color:#865c00}.metric{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid #e7edf6;padding:12px 0;font-size:14px}.metric span{color:#61718b}.metric strong{text-align:right;overflow-wrap:anywhere}.metric:last-child{border-bottom:0}.result-note{color:#66758e;font-size:12px;margin:18px 0 0;line-height:1.65}.muted-box{background:#f4f7fd;border:1px solid #e1e9f6;border-radius:13px;padding:13px 15px;font-size:13px;color:#536480;margin-top:15px}
+    .product{border:1px solid #dfe7f4;background:#f9fbff;border-radius:17px;padding:20px;margin-bottom:15px}.product-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:17px}.product-head h3{font-size:16px;margin:0}.lot-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini-stat{background:#f5f8ff;border:1px solid #e4ebf8;border-radius:12px;padding:13px}.mini-stat span{font-size:12px;color:#62718a;display:block}.mini-stat strong{font-size:18px;overflow-wrap:anywhere}.disclaimer{max-width:900px;margin:28px auto 0;color:#69768c;font-size:12px;text-align:center;line-height:1.7}footer{text-align:center;padding:0 20px 35px;color:#64728b;font-size:13px}footer button{border:0;background:none;text-decoration:underline;color:#3158ba;padding:0;font-size:inherit}
+    .privacy-button{position:fixed;bottom:14px;left:14px;z-index:20;background:#fff;color:#3158ba;border:1px solid #a8bdf7;border-radius:10px;padding:10px 13px;box-shadow:0 6px 20px #15274820;font-size:12px;font-weight:800}.cookie-banner{position:fixed;z-index:30;bottom:18px;left:18px;right:18px;max-width:610px;margin:auto;background:#fff;border:1px solid #d6e1f5;box-shadow:0 18px 55px #13213e38;border-radius:18px;padding:23px}.cookie-banner h2{margin:0 0 7px;font-size:19px}.cookie-banner p{font-size:13px;color:#5e6c85;margin:0 0 15px}.cookie-actions{display:flex;flex-wrap:wrap;gap:9px}.cookie-options{margin-top:15px;background:#f5f8fd;border-radius:12px;padding:12px;font-size:13px}.cookie-options label{display:flex;gap:9px;align-items:center}.cookie-options input{width:17px;height:17px}.cookie-options p{margin:9px 0}.privacy-details{margin:14px auto 0;max-width:900px;padding:16px 20px;background:#ffffffb3;border:1px solid #dfe7f4;border-radius:15px;font-size:13px;color:#54627c}.privacy-details h2{font-size:17px;color:var(--ink);margin:0 0 8px}.privacy-details p{margin:6px 0}
+    [hidden]{display:none!important}@media(max-width:780px){.layout{grid-template-columns:1fr}.hero{padding-top:37px}.card{padding:21px}.top-note{display:none}}@media(max-width:480px){.fields,.lot-summary{grid-template-columns:1fr}.field.full{grid-column:auto}.switcher{margin-top:21px}.hero h1{letter-spacing:-1px}.cookie-banner{left:10px;right:10px;bottom:10px;padding:17px}.actions .btn{flex:1}.product{padding:15px}}
   </style>
 </head>
-
 <body>
-  <header>
-    <div class="barra">
-      <div class="logo">Reventa<span>Pro</span></div>
-      <div class="etiqueta">Calculadora gratuita</div>
+<header class="topbar"><div class="top-inner"><div class="brand">Reventa<span>Pro</span></div><div class="top-note">Calcula antes de comprar. Decide con números.</div></div></header>
+<main>
+  <section class="hero"><span class="eyebrow">Herramienta gratuita para revendedores</span><h1>¿Cuánto ganas <em>realmente</em> al revender?</h1><p>Descubre el beneficio, los costes y la rentabilidad de cada venta o de un lote completo. Sin registro y con cálculos claros.</p><div class="highlights"><span>✓ Un producto o varios</span><span>✓ Euros y dólares</span><span>✓ Sin comisiones ocultas</span></div></section>
+  <nav class="switcher" aria-label="Tipo de cálculo"><button id="modoIndividual" type="button" class="active" aria-pressed="true">Un producto</button><button id="modoLote" type="button" aria-pressed="false">Varios productos</button></nav>
+  <section id="vistaIndividual" class="layout">
+    <div class="card"><h2>Datos de tu operación</h2><p class="intro">Introduce los importes reales. Puedes cambiar los datos para comparar escenarios.</p>
+      <form id="formulario" novalidate>
+        <div class="fields">
+          <div class="field"><label for="moneda">Moneda</label><select id="moneda"><option value="EUR">Euro (€)</option><option value="USD">Dólar ($)</option></select></div>
+          <div class="field"><label for="beneficioDeseado">Beneficio que quieres ganar</label><input id="beneficioDeseado" type="number" min="0" step="0.01" value="10" required></div>
+          <div class="field full"><label for="producto">Nombre del producto (opcional)</label><input id="producto" type="text" maxlength="80" placeholder="Ej.: Zapatillas deportivas"></div>
+          <div class="field"><label for="origenCompra">¿Dónde lo compras?</label><select id="origenCompra"><option>Shein</option><option>Temu</option><option>AliExpress</option><option>Amazon</option><option>Miravia</option><option>Tienda física</option><option>Mayorista</option><option>Otro proveedor</option></select></div>
+          <div class="field"><label for="plataforma">¿Dónde lo vendes?</label><select id="plataforma"><option>Wallapop</option><option>Vinted</option><option>eBay</option><option>Facebook Marketplace</option><option>Mercado Libre</option><option>Instagram</option><option>TikTok</option><option>WhatsApp</option><option>Otra plataforma</option></select></div>
+          <div class="field"><label for="compra">Precio de compra</label><input id="compra" type="number" min="0" step="0.01" value="20" required></div>
+          <div class="field"><label for="venta">Precio de venta</label><input id="venta" type="number" min="0" step="0.01" value="45" required></div>
+          <div class="field"><label for="envio">Envío que pagas</label><input id="envio" type="number" min="0" step="0.01" value="0" required></div>
+          <div class="field"><label for="embalaje">Embalaje</label><input id="embalaje" type="number" min="0" step="0.01" value="1" required></div>
+          <div class="field"><label for="comision">Comisión sobre venta (%)</label><input id="comision" type="number" min="0" max="100" step="0.01" value="0" required><small class="hint">Indica la tarifa real de tu plataforma.</small></div>
+          <div class="field"><label for="otros">Otros gastos</label><input id="otros" type="number" min="0" step="0.01" value="0" required></div>
+        </div><div id="errorIndividual" class="error" role="alert" hidden></div><div class="actions"><button class="btn btn-primary" type="submit">Calcular beneficio</button><button class="btn" type="reset">Reiniciar</button></div>
+      </form>
     </div>
-  </header>
-
-  <main>
-    <section class="introduccion">
-      <h1>¿Cuánto ganas realmente al revender?</h1>
-      <p>
-        Introduce tus costes y tu precio de venta para calcular el
-        beneficio, el margen y la rentabilidad de cada producto.
-      </p>
-    </section>
-
-    <div class="contenedor">
-      <section class="tarjeta">
-        <h2>Datos de la operación</h2>
-        <p class="descripcion">
-          Introduce los importes de tu operación. Puedes modificar cualquier
-          campo para comparar distintos escenarios.
-        </p>
-
-        <form id="formulario">
-          <div class="campo">
-  <label for="moneda">Moneda de la operación</label>
-  <select id="moneda">
-    <option value="EUR" selected>Euro (€)</option>
-    <option value="USD">Dólar estadounidense ($)</option>
-  </select>
-</div>
-            <div class="campo">
-  <label for="beneficioDeseado">Beneficio que deseas ganar (<span class="simbolo-moneda">€</span>)</label>
-  <input id="beneficioDeseado" type="number" min="0" step="0.01"
-    value="10" required>
-</div>
-          <div class="campo">
-            <label for="producto">Nombre del producto</label>
-            <input id="producto" type="text" maxlength="80"
-              placeholder="Ej.: Zapatillas deportivas">
-          </div>
-
-          <div class="campo">
-  <label for="origenCompra">¿Dónde compras el producto?</label>
-  <select id="origenCompra">
-    <option>Shein</option>
-    <option>Temu</option>
-    <option>AliExpress</option>
-    <option>Amazon</option>
-    <option>Miravia</option>
-    <option>Tienda física</option>
-    <option>Mayorista</option>
-    <option>Otro proveedor</option>
-  </select>
-</div>
-
-<div class="campo">
-  <label for="plataforma">¿Dónde vendes el producto?</label>
-  <select id="plataforma">
-    <option>Wallapop</option>
-    <option>Vinted</option>
-    <option>eBay</option>
-    <option>Facebook Marketplace</option>
-    <option>Mercado Libre</option>
-    <option>Instagram</option>
-    <option>TikTok</option>
-    <option>WhatsApp</option>
-    <option>Otra plataforma</option>
-  </select>
-</div>
-
-          <div class="campo">
-            <label for="compra">Precio de compra (<span class="simbolo-moneda">€</span>)</label>
-            <input id="compra" type="number" min="0" step="0.01"
-              value="20" required>
-          </div>
-
-          <div class="campo">
-            <label for="venta">Precio de venta (<span class="simbolo-moneda">€</span>)</label>
-            <input id="venta" type="number" min="0" step="0.01"
-              value="45" required>
-          </div>
-
-          <div class="campo">
-            <label for="envio">Envío que pagas tú (<span class="simbolo-moneda">€</span>)</label>
-            <input id="envio" type="number" min="0" step="0.01"
-              value="0" required>
-          </div>
-
-          <div class="campo">
-            <label for="embalaje">Embalaje (<span class="simbolo-moneda">€</span>)</label>
-            <input id="embalaje" type="number" min="0" step="0.01"
-              value="1" required>
-          </div>
-
-          <div class="campo">
-            <label for="comision">Comisión de venta (%)</label>
-            <input id="comision" type="number" min="0" max="100"
-              step="0.01" value="0" required>
-            <span class="ayuda">
-              Comprueba las tarifas reales de tu plataforma.
-            </span>
-          </div>
-
-          <div class="campo">
-            <label for="otros">Otros gastos (<span class="simbolo-moneda">€</span>)</label>
-            <input id="otros" type="number" min="0" step="0.01"
-              value="0" required>
-          </div>
-
-          <div class="botones">
-            <button class="principal" type="submit">
-              Calcular beneficio
-            </button>
-            <button class="secundario" type="reset">
-              Reiniciar
-            </button>
-          </div>
-        </form>
-      </section>
-
-      <section class="tarjeta" aria-live="polite">
-        <h2>Tu resultado</h2>
-        <p class="descripcion" id="tituloResultado">
-          Ejemplo inicial. Modifica los datos para calcular tu operación.
-        </p>
-
-        <div class="resultado-principal">
-          <p>Beneficio estimado</p>
-          <div class="beneficio" id="beneficio">24,00 €</div>
-          <div class="etiqueta-resultado" id="estado">
-            Operación rentable
-          </div>
-          <div class="fila">
-  <span>Precio mínimo para ganar lo deseado</span>
-  <strong id="precioMinimo">31,00 €</strong>
-</div>
-        </div>
-
-        <div class="fila">
-          <span>Precio de venta</span>
-          <strong id="rVenta">45,00 €</strong>
-        </div>
-        <div class="fila">
-          <span>Compra del producto</span>
-          <strong id="rCompra">−20,00 €</strong>
-        </div>
-        <div class="fila">
-          <span>Envío y embalaje</span>
-          <strong id="rLogistica">−1,00 €</strong>
-        </div>
-        <div class="fila">
-          <span>Comisión estimada</span>
-          <strong id="rComision">0,00 €</strong>
-        </div>
-        <div class="fila">
-          <span>Otros gastos</span>
-          <strong id="rOtros">0,00 €</strong>
-        </div>
-        <div class="fila">
-          <span>Coste total</span>
-          <strong id="rCoste">21,00 €</strong>
-        </div>
-        <div class="fila">
-          <span>Margen sobre venta</span>
-          <strong id="rMargen">53,33 %</strong>
-        </div>
-        <div class="fila">
-          <span>Rentabilidad sobre coste</span>
-          <strong id="rRentabilidad">114,29 %</strong>
-        </div>
-
-        <p class="aviso">
-          Importante: es una estimación. Introduce las comisiones y
-          los gastos que realmente te correspondan. No incluye
-          impuestos ni otros costes que no hayas declarado.
-        </p>
-      </section>
+    <aside class="card" aria-live="polite"><h2>Tu resultado</h2><p id="tituloResultado" class="intro">Ejemplo inicial: ajusta los importes a tu operación.</p><div class="result-hero"><div class="label">Beneficio estimado</div><div class="big positive" id="beneficio">24,00 €</div><span class="pill" id="estado">Objetivo alcanzado</span></div><div class="metric"><span>Precio mínimo para tu objetivo</span><strong id="precioMinimo">31,00 €</strong></div><div class="metric"><span>Precio de venta</span><strong id="rVenta">45,00 €</strong></div><div class="metric"><span>Compra del producto</span><strong id="rCompra">−20,00 €</strong></div><div class="metric"><span>Envío y embalaje</span><strong id="rLogistica">−1,00 €</strong></div><div class="metric"><span>Comisión estimada</span><strong id="rComision">0,00 €</strong></div><div class="metric"><span>Otros gastos</span><strong id="rOtros">0,00 €</strong></div><div class="metric"><span>Coste total</span><strong id="rCoste">21,00 €</strong></div><div class="metric"><span>Margen sobre venta</span><strong id="rMargen">53,33 %</strong></div><div class="metric"><span>Rentabilidad sobre coste</span><strong id="rRentabilidad">114,29 %</strong></div><p class="result-note">Estimación antes de impuestos. No incluye gastos que no hayas introducido ni garantiza que consigas vender al precio indicado.</p></aside>
+  </section>
+  <section id="vistaLote" class="layout" hidden>
+    <div class="card"><h2>ReventaPro Fácil · Compra y reventa</h2><p class="intro">Apunta tus productos, añade gastos una sola vez y descubre cuánto puedes ganar.</p>
+      <form id="formLote" novalidate><div class="fields"><div class="field"><label for="monedaLote">Moneda</label><select id="monedaLote"><option value="EUR">Euro (€)</option><option value="USD">Dólar ($)</option></select></div><div class="field"><label for="comisionLote">Comisión de venta (%)</label><input id="comisionLote" type="number" min="0" max="100" step="0.01" value="0" required></div></div>
+        <h3 class="section-title">1. ¿Qué vas a comprar?</h3><div id="listaProductosLote"></div><button type="button" class="btn btn-small" id="agregarProductoLote">+ Añadir otro producto</button>
+        <h3 class="section-title">2. ¿Cuáles son tus gastos?</h3><div class="fields"><div class="field"><label for="envioLote">Envío total</label><input id="envioLote" type="number" min="0" step="0.01" value="0" required></div><div class="field"><label for="embalajeLote">Embalaje total</label><input id="embalajeLote" type="number" min="0" step="0.01" value="0" required></div><div class="field"><label for="otrosLote">Impuestos y otros gastos extra</label><input id="otrosLote" type="number" min="0" step="0.01" value="0" required><small class="hint">Introduce aquí los impuestos o aranceles aplicables si los conoces.</small></div></div>
+        <div class="field" style="margin-top:16px"><label for="objetivoLote">Ganancia deseada por unidad</label><input id="objetivoLote" type="number" min="0" step="0.01" value="5"></div><h3 class="section-title">3. ¿A cuánto vas a vender?</h3><p class="intro">Cada producto muestra el precio para no perder y para ganar lo que deseas. Puedes elegir ×1,5, ×2 o ×3 como ejemplos, no como precios de mercado.</p><div id="errorLote" class="error" role="alert" hidden></div><div class="actions"><button class="btn btn-primary" type="submit">Calcular mis ganancias</button><button class="btn" type="button" id="reiniciarLote">Reiniciar lote</button></div>
+      </form>
     </div>
-  </main>
-
-  <footer>
-    ReventaPro · Calcula antes de comprar, vende con más información.
-  </footer>
-
-  <script>
-    const formulario = document.getElementById("formulario");
-
-    const obtenerNumero = (id) => {
-      const valor = document.getElementById(id).value.trim();
-
-      if (valor === "") {
-        return NaN;
-      }
-
-      return Number(valor);
-    };
-const monedaSeleccionada = () =>
-  document.getElementById("moneda").value;
-  function actualizarSimbolos() {
-  const simbolo = monedaSeleccionada() === "USD" ? "$" : "€";
-
-  document.querySelectorAll(".simbolo-moneda").forEach(elemento => {
-    elemento.textContent = simbolo;
-  });
-}
-
-const euros = (numero) =>
-  (Math.abs(numero) < 0.005 ? 0 : numero).toLocaleString("es-ES", {
-    style: "currency",
-    currency: monedaSeleccionada()
-  });
-    const porcentaje = (numero) =>
-      numero.toLocaleString("es-ES", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + " %";
-
-    function calcular() {
-      const compra = obtenerNumero("compra");
-      const venta = obtenerNumero("venta");
-      const envio = obtenerNumero("envio");
-      const embalaje = obtenerNumero("embalaje");
-      const comisionPorcentaje = obtenerNumero("comision");
-      const otros = obtenerNumero("otros");
-      const beneficioDeseado = obtenerNumero("beneficioDeseado");
-
-      const valores = [
-  compra,
-  venta,
-  envio,
-  embalaje,
-  comisionPorcentaje,
-  otros,
-  beneficioDeseado
-];
-
-      if (valores.some(v => !Number.isFinite(v) || v < 0)) {
-        alert("Introduce importes válidos, iguales o superiores a cero.");
-        return;
-      }
-
-      if (comisionPorcentaje > 100) {
-        alert("La comisión no puede superar el 100 %.");
-        return;
-      }
-
-      const importeComision = venta * comisionPorcentaje / 100;
-      const costeTotal = compra + envio + embalaje + otros + importeComision;
-      const beneficio = venta - costeTotal;
-      const precioMinimo = Math.ceil(
-  ((compra + envio + embalaje + otros + beneficioDeseado) /
-  (1 - comisionPorcentaje / 100)) * 100
-) / 100;
-      const margen = venta > 0 ? beneficio / venta * 100 : 0;
-      const rentabilidad = costeTotal > 0
-        ? beneficio / costeTotal * 100
-        : null;
-
-      document.getElementById("beneficio").textContent = euros(beneficio);
-      document.getElementById("precioMinimo").textContent = euros(precioMinimo);
-      document.getElementById("beneficio").classList.toggle(
-        "negativo", beneficio < 0
-      );
-
-      document.getElementById("rVenta").textContent = euros(venta);
-      document.getElementById("rCompra").textContent = "−" + euros(compra);
-      document.getElementById("rLogistica").textContent =
-        "−" + euros(envio + embalaje);
-      document.getElementById("rComision").textContent =
-        (importeComision === 0 ? "" : "-") + euros(importeComision);
-      document.getElementById("rOtros").textContent =
-  (otros === 0 ? "" : "-") + euros(otros);
-      document.getElementById("rCoste").textContent = euros(costeTotal);
-      document.getElementById("rMargen").textContent = porcentaje(margen);
-      document.getElementById("rRentabilidad").textContent =
-        rentabilidad === null ? "No disponible" : porcentaje(rentabilidad);
-
-      const producto = document.getElementById("producto").value.trim();
-const origenCompra = document.getElementById("origenCompra").value;
-const plataforma = document.getElementById("plataforma").value;
-
-      document.getElementById("tituloResultado").textContent =
-  (producto || "Tu producto") + " · " + origenCompra + " → " + plataforma;
-
-      const estado = document.getElementById("estado");
-
-    if (beneficio < 0) {
-  estado.textContent = "Operación con pérdidas";
-  estado.style.background = "#fdebed";
-  estado.style.color = "#d73745";
-} else if (beneficio < beneficioDeseado) {
-  estado.textContent = "Rentable, pero no alcanza tu objetivo";
-  estado.style.background = "#fff4d6";
-  estado.style.color = "#875d00";
-} else {
-  estado.textContent = "Objetivo de beneficio alcanzado";
-  estado.style.background = "#e6f6ee";
-  estado.style.color = "#138a55";
-}
-}
-
-    formulario.addEventListener("submit", function(evento) {
-      evento.preventDefault();
-      calcular();
-    });
-
-    formulario.addEventListener("reset", function() {
-  setTimeout(() => {
-    actualizarSimbolos();
-    calcular();
-  }, 0);
-});
-document.getElementById("moneda").addEventListener("change", () => {
-  actualizarSimbolos();
-  calcular();
-});
-actualizarSimbolos();
-    calcular();
-  </script>
-</body>
-
-<style>
-  #aviso-cookies {
-    position: fixed;
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
-    max-width: 680px;
-    margin: auto;
-    padding: 22px;
-    background: white;
-    color: #172033;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    box-shadow: 0 8px 35px rgba(0,0,0,.18);
-    z-index: 9999;
-    font-family: Arial, sans-serif;
-  }
-
-  #aviso-cookies h2 {
-    margin: 0 0 10px;
-    font-size: 19px;
-  }
-
-  #aviso-cookies p {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  .botones-cookies {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 9px;
-    margin-top: 16px;
-  }
-
-  .botones-cookies button,
-  #guardar-preferencias {
-    padding: 11px 16px;
-    border: 1px solid #2457e6;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  #aceptar-cookies {
-    background: #2457e6;
-    color: white;
-  }
-
-  #rechazar-cookies,
-  #configurar-cookies,
-  #guardar-preferencias {
-    background: white;
-    color: #2457e6;
-  }
-
-  #preferencias-cookies {
-    display: none;
-    margin-top: 15px;
-    padding: 12px;
-    background: #f3f6fb;
-    border-radius: 8px;
-  }
-
-  #ajustes-cookies {
-    position: fixed;
-    bottom: 12px;
-    left: 12px;
-    z-index: 9998;
-    display: none;
-    padding: 10px 14px;
-    border: 1px solid #2457e6;
-    border-radius: 8px;
-    background: white;
-    color: #2457e6;
-    cursor: pointer;
-  }
-</style>
-
-<div id="aviso-cookies" role="dialog"
-     aria-labelledby="titulo-cookies"
-     aria-describedby="texto-cookies"
-     aria-modal="true">
-  <h2 id="titulo-cookies">Tu privacidad importa</h2>
-
-  <p id="texto-cookies">
-    Utilizamos cookies de análisis para conocer cómo se utiliza
-    ReventaPro y mejorar la herramienta. Puedes aceptar,
-    rechazarlas o configurar tus preferencias.
-  </p>
-
-  <div class="botones-cookies">
-    <button id="aceptar-cookies">Aceptar</button>
-    <button id="rechazar-cookies">Rechazar</button>
-    <button id="configurar-cookies">Configurar</button>
-  </div>
-
-  <div id="preferencias-cookies">
-    <label>
-      <input type="checkbox" id="analitica-cookies">
-      Permitir cookies de análisis de Google Analytics
-    </label>
-    <p>
-      Las cookies técnicas necesarias para el funcionamiento
-      de la web no se pueden desactivar desde aquí.
-    </p>
-    <button id="guardar-preferencias">Guardar preferencias</button>
-  </div>
-</div>
-
-<button id="ajustes-cookies" type="button">
-  Preferencias de privacidad
-</button>
-
+    <aside class="card" id="resultadosLote" aria-live="polite"><h2>4. Tus cuentas, claras</h2><p class="intro">Calcula para conocer cuánto invertirías y cuánto podrías ganar.</p><div class="result-hero"><div class="label">Beneficio estimado del lote</div><div id="beneficioTotalLote" class="big neutral">—</div><span id="estadoLote" class="pill warning">Pendiente de cálculo</span></div><div class="metric"><span>Unidades compradas</span><strong id="unidadesLote">—</strong></div><div class="metric"><span>Inversión inicial (sin comisiones futuras)</span><strong id="inversionInicialLote">—</strong></div><div class="metric"><span>Inversión en productos</span><strong id="inversionProductosLote">—</strong></div><div class="metric"><span>Ingresos previstos</span><strong id="ingresosTotalLote">—</strong></div><div class="metric"><span>Comisiones estimadas</span><strong id="comisionesTotalLote">—</strong></div><div class="metric"><span>Envío, embalaje y otros</span><strong id="gastosTotalLote">—</strong></div><div class="metric"><span>Coste total</span><strong id="inversionTotalLote">—</strong></div><div class="metric"><span>Margen sobre ventas</span><strong id="margenTotalLote">—</strong></div><div class="metric"><span>Rentabilidad sobre coste</span><strong id="rentabilidadTotalLote">—</strong></div><div class="muted-box" id="detalleProductosLote"></div><button class="btn btn-small" type="button" id="copiarLote">Copiar resumen</button><span id="mensajeCopiar" class="hint" role="status"></span><div class="muted-box" id="detalleLote">Introduce los productos y pulsa «Calcular lote».</div><p class="result-note">Se supone que vendes todas las unidades al precio indicado. No garantiza ventas ni incluye gastos no declarados.</p></aside>
+  </section>
+  <p class="disclaimer">ReventaPro es una herramienta orientativa, no una promesa de ingresos. Las comisiones, impuestos, devoluciones y gastos dependen de cada operación. Verifica los importes antes de comprar.</p>
+  <section class="privacy-details" id="informacionPrivacidad" hidden><h2>Privacidad y transparencia</h2><p>La calculadora procesa los importes en tu navegador: no necesita cuenta ni envía tus precios a nuestro servidor. Tu elección de análisis se guarda en este navegador para recordarla.</p><p>Si aceptas las cookies de análisis, se carga Google Analytics (Google) para medir visitas. Puedes rechazarlas o cambiar tu decisión desde «Preferencias de privacidad». No utilizamos publicidad personalizada en esta página.</p><p>El uso de Google Analytics puede implicar tratamiento de datos por Google conforme a sus condiciones y política de privacidad. Esta información es orientativa y deberá completarse con los datos del responsable del sitio antes de su lanzamiento definitivo.</p></section>
+</main>
+<footer>© <span id="anio"></span> ReventaPro · Herramienta gratuita y transparente · <button type="button" id="abrirInfoPrivacidad">Información de privacidad</button></footer>
+<button class="privacy-button" type="button" id="ajustesCookies" hidden>Preferencias de privacidad</button>
+<div class="cookie-banner" id="avisoCookies" role="dialog" aria-labelledby="tituloCookies" aria-describedby="textoCookies"><h2 id="tituloCookies">Tu privacidad importa</h2><p id="textoCookies">Usamos análisis opcional para entender las visitas y mejorar ReventaPro. Puedes aceptar, rechazar o configurar tu elección. La calculadora funciona sin aceptar.</p><div class="cookie-actions"><button class="btn btn-primary btn-small" id="aceptarCookies" type="button">Aceptar</button><button class="btn btn-small" id="rechazarCookies" type="button">Rechazar</button><button class="btn btn-small" id="configurarCookies" type="button">Configurar</button></div><div id="preferenciasCookies" class="cookie-options" hidden><label><input id="analiticaCookies" type="checkbox"> Permitir Google Analytics</label><p>Si rechazas, no cargaremos Google Analytics en las siguientes visitas. Si lo habías aceptado y cambias a rechazar, recargaremos la página para detenerlo.</p><button class="btn btn-small" id="guardarCookies" type="button">Guardar preferencias</button></div></div>
 <script>
-(function () {
-  const CLAVE = "reventapro_consentimiento";
-
-  const aviso = document.getElementById("aviso-cookies");
-  const preferencias = document.getElementById("preferencias-cookies");
-  const ajustes = document.getElementById("ajustes-cookies");
-  const casilla = document.getElementById("analitica-cookies");
-
-  function activarAnalytics() {
-    if (window.reventaAnalyticsActivo) return;
-
-    window.reventaAnalyticsActivo = true;
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      window.dataLayer.push(arguments);
-    }
-
-    window.gtag = gtag;
-
-    gtag("consent", "default", {
-      analytics_storage: "denied",
-      ad_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied"
-    });
-
-    gtag("consent", "update", {
-      analytics_storage: "granted"
-    });
-
-    gtag("js", new Date());
-    gtag("config", "G-JSX3LYY5GQ");
-
-    const script = document.createElement("script");
-    script.async = true;
-    script.src =
-      "https://www.googletagmanager.com/gtag/js?id=G-JSX3LYY5GQ";
-
-    document.head.appendChild(script);
+'use strict';
+(function(){
+  const $=id=>document.getElementById(id);
+  const n=(id)=>{const raw=$(id).value.trim();return raw===''?NaN:Number(raw)};
+  const valid=x=>Number.isFinite(x)&&x>=0;
+  const fmt=(x,currency)=>new Intl.NumberFormat('es-ES',{style:'currency',currency}).format(Math.abs(x)<0.005?0:x);
+  const pct=x=>x===null?'No disponible':new Intl.NumberFormat('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}).format(x)+' %';
+  const neg=(x,c)=>x>0?'−'+fmt(x,c):fmt(0,c);
+  const showError=(id,msg)=>{$(id).textContent=msg;$(id).hidden=!msg};
+  $('anio').textContent=new Date().getFullYear();
+  function mode(lot){$('vistaIndividual').hidden=lot;$('vistaLote').hidden=!lot;$('modoIndividual').classList.toggle('active',!lot);$('modoLote').classList.toggle('active',lot);$('modoIndividual').setAttribute('aria-pressed',String(!lot));$('modoLote').setAttribute('aria-pressed',String(lot));}
+  $('modoIndividual').addEventListener('click',()=>mode(false));$('modoLote').addEventListener('click',()=>mode(true));
+  function individual(){
+    const c=$('moneda').value,ids=['beneficioDeseado','compra','venta','envio','embalaje','comision','otros'];
+    const values=ids.map(n);if(values.some(v=>!valid(v))){showError('errorIndividual','Completa todos los importes con números iguales o superiores a cero.');return false;}
+    const [objetivo,compra,venta,envio,embalaje,comision,otros]=values;
+    if(comision>100){showError('errorIndividual','La comisión no puede superar el 100 %.');return false;}
+    showError('errorIndividual','');
+    const importeComision=venta*comision/100,coste=compra+envio+embalaje+otros+importeComision,beneficio=venta-coste;
+    const minimo=comision===100?'No disponible (comisión del 100 %)':fmt(Math.ceil(((compra+envio+embalaje+otros+objetivo)/(1-comision/100)-1e-9)*100)/100,c);
+    $('beneficio').textContent=fmt(beneficio,c);$('beneficio').className='big '+(beneficio<0?'negative':'positive');
+    $('precioMinimo').textContent=minimo;$('rVenta').textContent=fmt(venta,c);$('rCompra').textContent=neg(compra,c);$('rLogistica').textContent=neg(envio+embalaje,c);$('rComision').textContent=neg(importeComision,c);$('rOtros').textContent=neg(otros,c);$('rCoste').textContent=fmt(coste,c);$('rMargen').textContent=venta>0?pct(beneficio/venta*100):'No disponible';$('rRentabilidad').textContent=coste>0?pct(beneficio/coste*100):'No disponible';
+    const status=$('estado');status.className='pill '+(beneficio<0?'loss':beneficio+1e-8<objetivo?'warning':'');status.textContent=beneficio<0?'Operación con pérdidas':beneficio+1e-8<objetivo?'No alcanza tu objetivo':'Objetivo de beneficio alcanzado';
+    $('tituloResultado').textContent=($('producto').value.trim()||'Tu producto')+' · '+$('origenCompra').value+' → '+$('plataforma').value;return true;
   }
-
-  function guardar(aceptado) {
-    localStorage.setItem(CLAVE, JSON.stringify({
-      analitica: aceptado,
-      fecha: new Date().toISOString()
-    }));
-
-    aviso.style.display = "none";
-    ajustes.style.display = "block";
-
-    if (aceptado) {
-      activarAnalytics();
-    }
-  }
-
-  function mostrarAviso() {
-    aviso.style.display = "block";
-    ajustes.style.display = "none";
-  }
-
-  const guardado = localStorage.getItem(CLAVE);
-
-  if (guardado) {
-    try {
-      const decision = JSON.parse(guardado);
-      aviso.style.display = "none";
-      ajustes.style.display = "block";
-
-      if (decision.analitica === true) {
-        activarAnalytics();
-      }
-    } catch (error) {
-      localStorage.removeItem(CLAVE);
-      mostrarAviso();
-    }
-  } else {
-    mostrarAviso();
-  }
-
-  document.getElementById("aceptar-cookies")
-    .addEventListener("click", () => guardar(true));
-
-  document.getElementById("rechazar-cookies")
-    .addEventListener("click", () => guardar(false));
-
-  document.getElementById("configurar-cookies")
-    .addEventListener("click", () => {
-      preferencias.style.display =
-        preferencias.style.display === "block" ? "none" : "block";
-    });
-
-  document.getElementById("guardar-preferencias")
-    .addEventListener("click", () => guardar(casilla.checked));
-
-  ajustes.addEventListener("click", mostrarAviso);
+  $('formulario').addEventListener('submit',e=>{e.preventDefault();individual()});$('formulario').addEventListener('reset',()=>setTimeout(individual,0));$('moneda').addEventListener('change',individual);individual();
+   let nextId=0; let ultimoResumen='';
+   const ceilCent=x=>Math.ceil((x-1e-9)*100)/100;
+   function addProduct(name='',buy='',qty='1',sell=''){
+     const id=++nextId,el=document.createElement('div');el.className='product';el.dataset.product=id;
+     el.innerHTML='<div class="product-head"><h3>Producto</h3><button class="btn btn-small btn-danger" type="button" data-remove="'+id+'">Quitar</button></div><div class="fields"><div class="field full"><label for="lotName'+id+'">¿Qué producto compras?</label><input id="lotName'+id+'" maxlength="80" placeholder="Ej.: Camisas"></div><div class="field"><label for="lotBuy'+id+'">¿Cuánto cuesta cada uno?</label><input id="lotBuy'+id+'" type="number" min="0" step="0.01" placeholder="Ej.: 8.20" required></div><div class="field"><label for="lotQty'+id+'">¿Cuántos compras?</label><input id="lotQty'+id+'" type="number" min="1" step="1" required></div><div class="field full"><label for="lotSell'+id+'">¿A cuánto venderás cada uno?</label><input id="lotSell'+id+'" type="number" min="0" step="0.01" placeholder="Ej.: 15.00" required></div><div class="field full"><span class="hint" id="precioGuia'+id+'">Introduce tus precios para ver las recomendaciones.</span><div class="actions" style="margin-top:9px"><button type="button" class="btn btn-small" data-mult="1.5">×1,5</button><button type="button" class="btn btn-small" data-mult="2">×2</button><button type="button" class="btn btn-small" data-mult="3">×3</button></div></div></div>';
+     $('listaProductosLote').appendChild(el);$('lotName'+id).value=name;$('lotBuy'+id).value=buy;$('lotQty'+id).value=qty;$('lotSell'+id).value=sell;renumber();return el;
+   }
+   function renumber(){[...$('listaProductosLote').children].forEach((el,i)=>{el.querySelector('h3').textContent='Producto '+(i+1);el.querySelector('[data-remove]').hidden=$('listaProductosLote').children.length===1});}
+   function inputs(){const c=$('monedaLote').value,commission=n('comisionLote'),shipping=n('envioLote'),pack=n('embalajeLote'),other=n('otrosLote'),target=n('objetivoLote');if(![commission,shipping,pack,other,target].every(valid)||commission>=100)throw Error('Revisa los gastos, el objetivo y la comisión: debe ser menor del 100 %.');const lines=[...$('listaProductosLote').children].map((el,i)=>{const id=el.dataset.product,buy=n('lotBuy'+id),qty=n('lotQty'+id),sell=n('lotSell'+id),name=$('lotName'+id).value.trim()||'Producto '+(i+1);if(!valid(buy)||!Number.isInteger(qty)||qty<1||!valid(sell))throw Error('Revisa el producto '+(i+1)+': completa los precios y la cantidad entera (mínimo 1).');return{id,name,buy,qty,sell}});return{c,commission,shipping,pack,other,target,lines};}
+   function compute(data){const{lines,commission,shipping,pack,other,target}=data,purchase=lines.reduce((a,p)=>a+p.buy*p.qty,0),units=lines.reduce((a,p)=>a+p.qty,0),shared=shipping+pack+other,revenue=lines.reduce((a,p)=>a+p.sell*p.qty,0),commissions=revenue*commission/100,initial=purchase+shared,total=initial+commissions,profit=revenue-total;const results=lines.map(p=>{const base=p.buy*p.qty,allocation=purchase>0?shared*base/purchase:shared*p.qty/units,unitCost=(base+allocation)/p.qty,minimum=ceilCent(unitCost/(1-commission/100)),goal=ceilCent((unitCost+target)/(1-commission/100)),gain=p.qty*(p.sell*(1-commission/100)-unitCost);return{...p,allocation,unitCost,minimum,goal,gain}});return{purchase,units,shared,revenue,commissions,initial,total,profit,results};}
+   function guides(){try{const data=inputs(),r=compute(data);r.results.forEach(p=>{$('precioGuia'+p.id).textContent='Para no perder: '+fmt(p.minimum,data.c)+' · Para ganar '+fmt(data.target,data.c)+' por unidad: '+fmt(p.goal,data.c)+' · Ganancia actual por unidad: '+fmt(p.gain/p.qty,data.c)});}catch(e){[...$('listaProductosLote').children].forEach(el=>{$('precioGuia'+el.dataset.product).textContent='Completa todos los campos para calcular el precio mínimo.'});}}
+   function resetLotResults(){for(const id of ['beneficioTotalLote','inversionProductosLote','ingresosTotalLote','comisionesTotalLote','gastosTotalLote','inversionTotalLote','margenTotalLote','rentabilidadTotalLote','inversionInicialLote','unidadesLote'])$(id).textContent='—';$('beneficioTotalLote').className='big neutral';$('estadoLote').className='pill warning';$('estadoLote').textContent='Pendiente de cálculo';$('detalleLote').textContent='Introduce los productos y pulsa «Calcular mis ganancias».';$('detalleProductosLote').replaceChildren();ultimoResumen='';}
+   function lot(){try{const data=inputs(),r=compute(data),c=data.c;showError('errorLote','');$('beneficioTotalLote').textContent=fmt(r.profit,c);$('beneficioTotalLote').className='big '+(r.profit<-.005?'negative':'positive');$('estadoLote').textContent=r.profit<-.005?'Con estos precios perderías dinero':r.profit<.005?'Sin ganancia estimada':'Ganancia estimada si vendes todo';$('estadoLote').className='pill '+(r.profit<-.005?'loss':r.profit<.005?'warning':'');$('unidadesLote').textContent=String(r.units);$('inversionInicialLote').textContent=fmt(r.initial,c);$('inversionProductosLote').textContent=fmt(r.purchase,c);$('ingresosTotalLote').textContent=fmt(r.revenue,c);$('comisionesTotalLote').textContent=neg(r.commissions,c);$('gastosTotalLote').textContent=neg(r.shared,c);$('inversionTotalLote').textContent=fmt(r.total,c);$('margenTotalLote').textContent=r.revenue>0?pct(r.profit/r.revenue*100):'No disponible';$('rentabilidadTotalLote').textContent=r.total>0?pct(r.profit/r.total*100):'No disponible';$('detalleLote').textContent=r.results.length+' tipos de producto · '+r.units+' unidades. Gastos compartidos repartidos según el valor de compra (o por unidades cuando todos cuestan 0).';$('detalleProductosLote').replaceChildren();const summary=['ReventaPro Fácil','Inversión inicial: '+fmt(r.initial,c),'Ventas previstas: '+fmt(r.revenue,c),'Comisiones: '+fmt(r.commissions,c),'Ganancia estimada: '+fmt(r.profit,c)];r.results.forEach(p=>{const line=document.createElement('div');line.className='metric';const left=document.createElement('span');left.textContent=p.name+' · '+p.qty+' unidades';const right=document.createElement('strong');right.textContent='Ganancia: '+fmt(p.gain,c)+' ('+fmt(p.gain/p.qty,c)+'/ud.)';right.className=p.gain<0?'negative':'positive';line.append(left,right);$('detalleProductosLote').appendChild(line);summary.push(p.name+': '+p.qty+' unidades, ganancia '+fmt(p.gain,c));});ultimoResumen=summary.join('\n')+'\nEstimación suponiendo que se vende todo.';guides();return true;}catch(e){showError('errorLote',e.message);resetLotResults();return false;}}
+   $('agregarProductoLote').addEventListener('click',()=>{if($('listaProductosLote').children.length>=30)return;addProduct();guides();resetLotResults()});
+   $('listaProductosLote').addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(b){if($('listaProductosLote').children.length<=1)return;b.closest('.product').remove();renumber();guides();resetLotResults();return;}const mult=e.target.closest('[data-mult]');if(mult){try{const data=inputs(),r=compute(data),id=mult.closest('.product').dataset.product,p=r.results.find(x=>x.id===id),factor=Number(mult.dataset.mult);$('lotSell'+id).value=ceilCent(p.unitCost*factor/(1-data.commission/100)).toFixed(2);guides();resetLotResults();}catch(err){showError('errorLote','Completa los datos antes de usar los multiplicadores.');}}});
+   $('formLote').addEventListener('input',()=>{guides();resetLotResults()});$('formLote').addEventListener('submit',e=>{e.preventDefault();lot()});$('reiniciarLote').addEventListener('click',()=>{$('formLote').reset();$('listaProductosLote').replaceChildren();addProduct();showError('errorLote','');resetLotResults()});$('monedaLote').addEventListener('change',()=>{guides();resetLotResults()});$('copiarLote').addEventListener('click',async()=>{if(!ultimoResumen){$('mensajeCopiar').textContent='Calcula primero tus ganancias.';return;}try{await navigator.clipboard.writeText(ultimoResumen);$('mensajeCopiar').textContent='Resumen copiado.';}catch(e){$('mensajeCopiar').textContent='Tu navegador no permitió copiar automáticamente.';}});addProduct('Camisas','8.20','8','15');addProduct('Pantalones','4','30','10');$('envioLote').value='15';guides();
+  // Analytics: solo se carga después del consentimiento explícito.
+  const KEY='reventapro_consentimiento',banner=$('avisoCookies'),settings=$('ajustesCookies'),options=$('preferenciasCookies'),check=$('analiticaCookies');let analyticsLoaded=false;
+  function activateAnalytics(){if(analyticsLoaded)return;analyticsLoaded=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});window.gtag('consent','update',{analytics_storage:'granted'});window.gtag('js',new Date());window.gtag('config','G-JSX3LYY5GQ');const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-JSX3LYY5GQ';document.head.appendChild(s);}
+  function displayConsent(saved){banner.hidden=saved;settings.hidden=!saved;options.hidden=true;}
+  function saveConsent(allowed){const previouslyLoaded=analyticsLoaded;try{localStorage.setItem(KEY,JSON.stringify({analitica:allowed,fecha:new Date().toISOString()}))}catch(e){}displayConsent(true);check.checked=allowed;if(allowed)activateAnalytics();else if(previouslyLoaded)window.location.reload();}
+  $('aceptarCookies').addEventListener('click',()=>saveConsent(true));$('rechazarCookies').addEventListener('click',()=>saveConsent(false));$('configurarCookies').addEventListener('click',()=>options.hidden=!options.hidden);$('guardarCookies').addEventListener('click',()=>saveConsent(check.checked));settings.addEventListener('click',()=>displayConsent(false));$('abrirInfoPrivacidad').addEventListener('click',()=>{const p=$('informacionPrivacidad');p.hidden=!p.hidden;if(!p.hidden)p.scrollIntoView({behavior:'smooth',block:'center'})});
+  let stored=null;try{stored=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}if(stored&&typeof stored.analitica==='boolean'){displayConsent(true);check.checked=stored.analitica;if(stored.analitica)activateAnalytics()}else displayConsent(false);
 })();
 </script>
-
+</body>
 </html>
