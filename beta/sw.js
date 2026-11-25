@@ -1,4 +1,4 @@
-const CACHE='reventapro-beta-v2-3';
+const CACHE='reventapro-beta-v2-4';
 const HOME=new URL('./index.html',self.registration.scope).href;
 const ROOT=new URL('./',self.registration.scope).pathname;
 const ASSETS=['./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];

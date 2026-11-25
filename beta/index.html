@@ -41,12 +41,21 @@
 #rpInstallDialog ol{padding:0;list-style:none;margin:16px 0;display:grid;gap:9px;counter-reset:rpstep}#rpInstallDialog li{counter-increment:rpstep;display:flex;align-items:center;gap:10px;background:#f2f5fd;border:1px solid #e2e8f6;border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.4}#rpInstallDialog li::before{content:counter(rpstep);display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:50%;background:#315ff4;color:white;font-weight:800}
 #rpInstallDialog .rp-install-button{width:100%;display:block;text-align:center;text-decoration:none;font:inherit;font-weight:800;border:1px solid #315ff4;background:#315ff4;color:#fff;border-radius:12px;padding:12px;margin-top:9px;cursor:pointer}#rpInstallDialog .rp-install-secondary{background:#fff;color:#2445b7;border-color:#c9d5f0}#rpInstallDialog [hidden]{display:none!important}#rpInstallDialog input{width:100%;margin-top:10px;padding:10px;border:1px solid #c9d5f0;border-radius:10px;font-size:16px}#rpInstallDialog .rp-install-note{font-size:12px;text-align:center;color:#65738a;margin-top:14px}
 
+
+/* Instalación visible en portada, sin interrumpir la calculadora */
+.rp-install-hero{margin:18px auto 0;max-width:365px;display:grid;gap:6px;justify-items:center}
+#rpInstallHero{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:56px;padding:12px 16px;background:linear-gradient(120deg,#153bc9,#315ff4);color:#fff;border:0;border-radius:15px;box-shadow:0 8px 22px #315ff444;font-size:17px;font-weight:850;line-height:1.3}
+#rpInstallHero svg{width:23px;height:23px;flex:none} .rp-install-hero small{color:#53637d;font-size:12px}
+#rpInstallDialog .rp-install-button:not(.rp-install-secondary){min-height:52px;font-size:17px;box-shadow:0 5px 16px #315ff433}
+#rpInstallDialog ol:empty{display:none} #rpInstallDialog .rp-install-note{margin-bottom:5px}
+@media(max-width:480px){.rp-install-hero{margin-top:14px}#rpInstallDialog{padding:18px}#rpInstallDialog h2{font-size:24px}}
+
 </style>
 </head>
 <body>
 <header class="topbar"><div class="top-inner"><div class="brand">Reventa<span>Pro</span></div><nav class="appnav" aria-label="Acceso rápido"><button id="rpHistoryJump" type="button">Historial</button><button id="rpInstall" type="button">Instalar app</button></nav></div></header>
 <main>
-  <section class="hero"><span class="eyebrow">Herramienta gratuita para revendedores</span><h1>¿Cuánto ganas <em>realmente</em> al revender?</h1><p>Descubre el beneficio, los costes y la rentabilidad de cada venta o de un lote completo. Sin registro y con cálculos claros.</p><div class="highlights"><span>✓ Un producto o varios</span><span>✓ Euros y dólares</span><span>✓ Sin registro</span></div></section>
+  <section class="hero"><span class="eyebrow">Herramienta gratuita para revendedores</span><h1>¿Cuánto ganas <em>realmente</em> al revender?</h1><p>Descubre el beneficio, los costes y la rentabilidad de cada venta o de un lote completo. Sin registro y con cálculos claros.</p><div class="highlights"><span>✓ Un producto o varios</span><span>✓ Euros y dólares</span><span>✓ Sin registro</span></div><div class="rp-install-hero" id="rpInstallHeroWrap"><button id="rpInstallHero" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></svg>Descarga la app gratis</button><small>iPhone · Android · Desde tu navegador</small></div></section>
   <nav class="switcher" aria-label="Tipo de cálculo"><button id="modoIndividual" type="button" class="active" aria-pressed="true">Un producto</button><button id="modoLote" type="button" aria-pressed="false">Varios productos</button></nav>
   <section id="vistaIndividual" class="layout">
     <div class="card"><h2>Datos de tu operación</h2><p class="intro">Introduce tus propios importes y pulsa «Calcular beneficio». Los gastos que no tengas pueden quedar vacíos.</p>
@@ -199,29 +208,37 @@
   $('rpExport').onclick=()=>{const c=$('rpCurrency').value,a=rpLoad().filter(x=>x.currency===c);if(!a.length){$('rpHistoryStatus').textContent='No hay cálculos para exportar.';return}const cell=(v,i)=>'"'+(i<4?String(v).replace(/^[=+@\-\t\r]/,"'$&"):String(v)).replace(/"/g,'""')+'"';const data=[['Fecha','Producto','Tipo','Moneda','Ingresos previstos','Costes previstos','Beneficio previsto'],...a.map(x=>[x.date,x.name,x.kind,x.currency,x.revenue.toFixed(2),x.cost.toFixed(2),x.profit.toFixed(2)])].map(r=>r.map(cell).join(';')).join('\r\n');const u=URL.createObjectURL(new Blob(['\ufeff'+data],{type:'text/csv;charset=utf-8'})),link=document.createElement('a');link.href=u;link.download='ReventaPro-calculos-'+c+'.csv';link.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};rpRender();
   const standalone=()=>window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
   const installDialog=$('rpInstallDialog'),installButton=$('rpInstall'),nativeButton=$('rpNativeInstall'),installCopy=$('rpInstallCopy'),installLink=$('rpInstallLink'),installStatus=$('rpInstallStatus');
-  let rpPrompt=null;
-  const updateInstall=()=>{installButton.hidden=standalone();if(standalone()&&installDialog.open)installDialog.close()};
+  let rpPrompt=null, rpInstalled=false;
+  const heroWrap=$('rpInstallHeroWrap'),heroButton=$('rpInstallHero');
+  const wantsInstall=new URL(location.href).searchParams.get('instalar')==='1';
+  const updateInstall=()=>{const hidden=standalone()||rpInstalled;installButton.hidden=hidden;heroWrap.hidden=hidden;if(hidden&&installDialog.open)installDialog.close()};
   updateInstall();window.matchMedia('(display-mode: standalone)').addEventListener?.('change',updateInstall);
-  window.addEventListener('appinstalled',()=>{rpPrompt=null;installButton.hidden=true;if(installDialog.open)installDialog.close()});
-  const installURL=new URL('./',location.href);installURL.search='';installURL.hash='';
+  window.addEventListener('appinstalled',()=>{rpPrompt=null;rpInstalled=true;updateInstall()});
+  const installURL=new URL('./',location.href);installURL.search='';installURL.hash='';installURL.searchParams.set('instalar','1');
   const openChrome=$('rpOpenChrome');
-  if(installURL.protocol==='https:')openChrome.href='intent://'+installURL.host+installURL.pathname+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(installURL.href)+';end';
+  if(installURL.protocol==='https:')openChrome.href='intent://'+installURL.host+installURL.pathname+installURL.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(installURL.href)+';end';
   function installEnvironment(){const ua=navigator.userAgent||'';const ios=/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);return {ios,android:/Android/i.test(ua),embedded:/Instagram|FBAN|FBAV|FB_IAB|TikTok|Bytedance|musical_ly|Snapchat|; wv\)|\bWebView\b/i.test(ua)}}
   function renderInstall(){const {ios,android,embedded}=installEnvironment();let title='Instala ReventaPro',lead='',steps=[];nativeButton.hidden=!rpPrompt;installCopy.hidden=true;installLink.hidden=true;installStatus.hidden=true;openChrome.hidden=true;
-   if(rpPrompt){lead='La instalación está disponible. Confirma en la siguiente ventana.';steps=['Pulsa Instalar app gratis.','Confirma la instalación en tu navegador.'];}
-   else if(embedded){title='Abre ReventaPro en tu navegador';lead='Este navegador de redes sociales puede impedir la instalación. Abre el enlace fuera de la red social.';steps=['Pulsa los tres puntos (⋯) de la parte superior.','Elige Abrir en '+(ios?'Safari':'el navegador o Chrome')+'.','Pulsa Instalar app en ReventaPro.'];installCopy.hidden=false;}
+   if(rpPrompt){title='¡Tu app está lista para instalar!';lead='Ten ReventaPro siempre a mano. Pulsa el botón azul y confirma en tu navegador.';steps=[];}
+   else if(embedded){title='Abre ReventaPro en tu navegador';lead='Este navegador de redes sociales puede impedir la instalación. Abre el enlace fuera de la red social.';steps=['Pulsa los tres puntos (⋯) de la parte superior.','Elige Abrir en '+(ios?'Safari':'el navegador o Chrome')+'.','La ventana de instalación se abrirá al usar el enlace copiado o el botón Abrir en Chrome. Si no aparece, pulsa Descarga la app gratis.'];installCopy.hidden=false;}
    else if(ios){title='Instala ReventaPro en iPhone';lead='Desde Safari, añade ReventaPro a tu pantalla de inicio.';steps=['Pulsa Compartir (cuadrado con flecha ↑).','Busca Añadir a pantalla de inicio (en Ver más, si aparece).','Activa Abrir como app web si aparece y pulsa Añadir.'];installCopy.hidden=false;}
-   else if(android){title='Instala ReventaPro en Android';lead='Si no aparece la instalación directa, abre esta web en Chrome y sigue estos pasos.';steps=['Pulsa el menú ⋮ de Chrome.','Elige Instalar aplicación o Añadir a pantalla de inicio.','Confirma y abre ReventaPro desde su icono.'];installCopy.hidden=false;}
+   else if(android){title='Instala ReventaPro en Android';lead='Si Chrome habilita la instalación directa, aparecerá aquí el botón azul. Si no, puedes instalar desde el menú del navegador.';steps=['Pulsa el menú ⋮ de Chrome.','Elige Instalar aplicación o Añadir a pantalla de inicio.','Confirma y abre ReventaPro desde su icono.'];installCopy.hidden=false;}
    else{lead='Usa el menú de instalación de Chrome o Edge.';steps=['Busca el icono de instalación en la barra de direcciones o abre el menú ⋮.','Elige Instalar ReventaPro o la opción equivalente.'];installCopy.hidden=false;}
    if(!rpPrompt&&android&&installURL.protocol==='https:'&&(embedded||!/Chrome\//i.test(navigator.userAgent)||/SamsungBrowser|EdgA|OPR|UCBrowser|VivoBrowser|MiuiBrowser|HeyTapBrowser/i.test(navigator.userAgent)))openChrome.hidden=false;
    $('rpInstallTitle').textContent=title;$('rpInstallLead').textContent=lead;const list=$('rpInstallSteps');list.replaceChildren();steps.forEach(step=>{const li=document.createElement('li');li.textContent=step;list.append(li)});
   }
-  function showInstall(){renderInstall();if(!installDialog.open)installDialog.showModal()}
+  function showInstall(){if(standalone()||rpInstalled)return;renderInstall();if(!installDialog.open)installDialog.showModal()}
   window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();rpPrompt=e;if(installDialog.open)renderInstall()});
-  async function requestInstall(){if(standalone())return;if(!rpPrompt){showInstall();return}const prompt=rpPrompt;rpPrompt=null;try{await prompt.prompt();const choice=await prompt.userChoice;if(choice?.outcome==='accepted'){if(installDialog.open)installDialog.close()}else if(installDialog.open)installDialog.close();}catch{showInstall()}}
-  installButton.onclick=requestInstall;nativeButton.onclick=requestInstall;
+  async function requestInstall(){if(standalone()||rpInstalled)return;if(!rpPrompt){showInstall();return}const prompt=rpPrompt;rpPrompt=null;try{await prompt.prompt();const choice=await prompt.userChoice;if(choice?.outcome==='accepted'){if(installDialog.open)installDialog.close()}else if(installDialog.open)installDialog.close();}catch{showInstall()}}
+  installButton.onclick=requestInstall;heroButton.onclick=requestInstall;nativeButton.onclick=requestInstall;
   $('rpInstallClose').onclick=$('rpInstallContinue').onclick=()=>installDialog.close();
   installCopy.onclick=async()=>{installLink.value=installURL.href;try{await navigator.clipboard.writeText(installURL.href);installStatus.textContent='Enlace copiado. Pégalo en '+(installEnvironment().ios?'Safari':'Chrome')+'.'}catch{installLink.hidden=false;installLink.focus();installLink.select();installStatus.textContent='Copia el enlace seleccionado y ábrelo en tu navegador.'}installStatus.hidden=false;};
+  // El enlace conserva la intención al cambiar de navegador. La confirmación nativa requiere un toque real.
+  if(wantsInstall){
+    const clean=new URL(location.href);clean.searchParams.delete('instalar');
+    try{history.replaceState(history.state,'',clean.href)}catch{}
+    showInstall();
+  }
   if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 
 })();
